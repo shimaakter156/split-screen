@@ -437,8 +437,8 @@
         {{-- GRID VIEW --}}
         <div id="gridView">
             <div class="iframe-panel" id="panel0">
-                <div class="iframe-panel-label"><span class="dot d1"></span> <span id="label0"  onclick="switchTab(0)">Link 1</span></div>
-                <div class="iframe-loading" id="loading0"><div class="spinner"></div> Loading...</div>
+{{--                <div class="iframe-panel-label"><span class="dot d1"></span> <span id="label0"  onclick="switchTab(0)">Link 1</span></div>--}}
+{{--                <div class="iframe-loading" id="loading0"><div class="spinner"></div> Loading...</div>--}}
                 <iframe id="iframe0" src=""></iframe>
                 <div class="iframe-fallback" id="fallback0">
                     <div class="fallback-icon">🔒</div>
@@ -448,8 +448,8 @@
                 </div>
             </div>
             <div class="iframe-panel" id="panel1">
-                <div class="iframe-panel-label"><span class="dot d2"></span> <span id="label1"  onclick="switchTab(1)">Link 2</span></div>
-                <div class="iframe-loading" id="loading1"><div class="spinner"></div> Loading...</div>
+{{--                <div class="iframe-panel-label"><span class="dot d2"></span> <span id="label1"  onclick="switchTab(1)">Link 2</span></div>--}}
+{{--                <div class="iframe-loading" id="loading1"><div class="spinner"></div> Loading...</div>--}}
                 <iframe id="iframe1" src=""></iframe>
                 <div class="iframe-fallback" id="fallback1">
                     <div class="fallback-icon">🔒</div>
@@ -459,8 +459,8 @@
                 </div>
             </div>
             <div class="iframe-panel" id="panel2">
-                <div class="iframe-panel-label"><span class="dot d3"></span> <span id="label2"  onclick="switchTab(2)">Link 3</span></div>
-                <div class="iframe-loading" id="loading2"><div class="spinner"></div> Loading...</div>
+{{--                <div class="iframe-panel-label"><span class="dot d3"></span> <span id="label2"  onclick="switchTab(2)">Link 3</span></div>--}}
+{{--                <div class="iframe-loading" id="loading2"><div class="spinner"></div> Loading...</div>--}}
                 <iframe id="iframe2" src=""></iframe>
                 <div class="iframe-fallback" id="fallback2">
                     <div class="fallback-icon">🔒</div>
@@ -470,8 +470,8 @@
                 </div>
             </div>
             <div class="iframe-panel" id="panel3">
-                <div class="iframe-panel-label"><span class="dot d4"></span> <span id="label3"  onclick="switchTab(3)">Link 4</span></div>
-                <div class="iframe-loading" id="loading3"><div class="spinner"></div> Loading...</div>
+{{--                <div class="iframe-panel-label"><span class="dot d4"></span> <span id="label3"  onclick="switchTab(3)">Link 4</span></div>--}}
+{{--                <div class="iframe-loading" id="loading3"><div class="spinner"></div> Loading...</div>--}}
                 <iframe id="iframe3" src=""></iframe>
                 <div class="iframe-fallback" id="fallback3">
                     <div class="fallback-icon">🔒</div>
