@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Split Screen</title>
+    <title>SplitScreen</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
@@ -19,7 +19,6 @@
             --yellow: #f7c948;
             --text: #e8e8f0;
             --muted: #6b6b8a;
-            --glow: rgba(108,99,255,0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -58,7 +57,7 @@
 
         .form-card {
             width: 100%;
-            max-width: 540px;
+            max-width: 580px;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 24px;
@@ -87,16 +86,28 @@
             text-transform: uppercase;
         }
 
-        .form-header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
+        .form-header h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+        .form-header p  { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+        .supported-types {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
         }
 
-        .form-header p { color: var(--muted); font-size: 14px; font-weight: 300; }
+        .type-chip {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+        }
+        .type-chip.web    { background: rgba(108,99,255,0.15); color: var(--accent);  border: 1px solid rgba(108,99,255,0.3); }
+        .type-chip.yt     { background: rgba(255,0,0,0.15);    color: #ff4444;        border: 1px solid rgba(255,0,0,0.3); }
+        .type-chip.gdrive { background: rgba(247,201,72,0.15); color: var(--yellow);  border: 1px solid rgba(247,201,72,0.3); }
 
-        .link-input-group { margin-bottom: 16px; }
+        .link-input-group { margin-bottom: 14px; }
 
         .link-input-group label {
             display: flex;
@@ -107,7 +118,7 @@
             color: var(--muted);
             letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 7px;
         }
 
         .link-num {
@@ -118,7 +129,6 @@
             border-radius: 50%;
             font-size: 10px;
             font-weight: 700;
-            color: white;
         }
 
         .link-input-group input {
@@ -139,6 +149,19 @@
         .link-input-group.g2 input:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(255,101,132,0.2); }
         .link-input-group.g3 input:focus { border-color: var(--accent3); box-shadow: 0 0 0 3px rgba(67,233,123,0.2); }
         .link-input-group.g4 input:focus { border-color: var(--yellow);  box-shadow: 0 0 0 3px rgba(247,201,72,0.2); }
+
+        .type-badge {
+            display: none;
+            margin-top: 6px;
+            font-size: 11px;
+            font-family: 'Space Mono', monospace;
+            padding: 3px 10px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+        .type-badge.web    { background: rgba(108,99,255,0.15); color: var(--accent);  border: 1px solid rgba(108,99,255,0.3); }
+        .type-badge.yt     { background: rgba(255,0,0,0.15);    color: #ff4444;        border: 1px solid rgba(255,0,0,0.3); }
+        .type-badge.gdrive { background: rgba(247,201,72,0.15); color: var(--yellow);  border: 1px solid rgba(247,201,72,0.3); }
 
         .error-msg {
             color: var(--accent2);
@@ -163,11 +186,10 @@
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 20px rgba(108,99,255,0.4);
         }
-
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,99,255,0.5); }
+        .submit-btn:hover  { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,99,255,0.5); }
         .submit-btn:active { transform: translateY(0); }
 
-        /* ======== IFRAME SCREEN ======== */
+        /* ======== VIEWER SCREEN ======== */
         #iframeScreen {
             display: none;
             position: fixed;
@@ -175,10 +197,8 @@
             z-index: 100;
             flex-direction: column;
         }
-
         #iframeScreen.active { display: flex; }
 
-        /* Top Bar */
         .viewer-topbar {
             display: flex;
             align-items: center;
@@ -193,10 +213,10 @@
 
         .brand {
             font-family: 'Space Mono', monospace;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--accent);
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             white-space: nowrap;
         }
 
@@ -219,9 +239,11 @@
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-
-        .tab-pill:hover { border-color: var(--accent); color: var(--text); }
+        .tab-pill:hover         { border-color: var(--accent); color: var(--text); }
         .tab-pill.active        { background: var(--accent);  border-color: var(--accent);  color: white; font-weight: 600; }
         .tab-pill.t2.active     { background: var(--accent2); border-color: var(--accent2); }
         .tab-pill.t3.active     { background: var(--accent3); border-color: var(--accent3); color: #000; }
@@ -242,14 +264,8 @@
         }
         .back-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* Iframe Body */
-        .iframe-body {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
+        .iframe-body { flex: 1; overflow: hidden; position: relative; }
 
-        /* Grid View */
         #gridView {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -259,12 +275,7 @@
             height: 100%;
         }
 
-        /* Single View */
-        #singleView {
-            display: none;
-            height: 100%;
-            padding: 8px;
-        }
+        #singleView { display: none; height: 100%; padding: 8px; }
 
         .iframe-panel {
             border-radius: 10px;
@@ -300,58 +311,12 @@
             width: 100%;
             border: none;
             background: white;
-        }
-
-        /* ---- BLOCKED FALLBACK ---- */
-        .iframe-fallback {
             display: none;
-            flex: 1;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            padding: 30px;
-            text-align: center;
-            background: var(--surface2);
         }
 
-        .fallback-icon { font-size: 48px; }
-
-        .fallback-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .fallback-desc {
-            font-size: 12px;
-            color: var(--muted);
-            max-width: 280px;
-            line-height: 1.6;
-        }
-
-        .open-btn {
-            padding: 10px 24px;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 16px rgba(108,99,255,0.4);
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .open-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.5); color: white; }
-
-        /* Loading spinner */
         .iframe-loading {
             position: absolute;
-            inset: 26px 0 0 0;
+            inset: 28px 0 0 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -360,8 +325,8 @@
             gap: 10px;
             font-size: 12px;
             color: var(--muted);
-            pointer-events: none;
-            transition: opacity 0.3s;
+            font-family: 'Space Mono', monospace;
+            z-index: 2;
         }
 
         .spinner {
@@ -371,8 +336,40 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        .iframe-fallback {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 30px;
+            text-align: center;
+            background: var(--surface2);
+        }
+
+        .fallback-icon  { font-size: 44px; }
+        .fallback-title { font-size: 15px; font-weight: 600; }
+        .fallback-desc  { font-size: 12px; color: var(--muted); max-width: 260px; line-height: 1.6; }
+
+        .open-btn {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(108,99,255,0.4);
+        }
+        .open-btn:hover { transform: translateY(-2px); color: white; }
     </style>
 </head>
 <body>
@@ -381,53 +378,62 @@
 <div id="formScreen">
     <div class="form-card">
         <div class="form-header">
-            <div class="badge">⚡ Split Screen</div>
-            <h1>Submit Your Links</h1>
-            <p>Enter 4 URLs — view and interact with them all in one screen</p>
+            <div class="badge">✦ SplitScreen</div>
+            <h1>SplitScreen</h1>
+            <p>Paste any URL — auto detected instantly</p>
+            <div class="supported-types">
+                <span class="type-chip web">🌐 Website</span>
+                <span class="type-chip yt">▶️ YouTube</span>
+                <span class="type-chip gdrive">📁 Google Drive</span>
+            </div>
         </div>
 
         <form id="linkForm" novalidate>
             @csrf
 
             <div class="link-input-group g1">
-                <label><span class="link-num" style="background:var(--accent)">1</span> Link One</label>
-                <input type="text" id="link1" placeholder="https://your-first-link.com" autocomplete="off">
-                <p class="error-msg" id="err1">⚠ Please enter a valid URL starting with http:// or https://</p>
+                <label><span class="link-num" style="background:var(--accent);color:white">1</span> Link One</label>
+                <input type="text" id="link1" placeholder="Paste any URL here..." autocomplete="off">
+                <div class="type-badge" id="badge1"></div>
+                <p class="error-msg" id="err1">⚠ Please enter a valid URL starting with https://</p>
             </div>
 
             <div class="link-input-group g2">
-                <label><span class="link-num" style="background:var(--accent2)">2</span> Link Two</label>
-                <input type="text" id="link2" placeholder="https://your-second-link.com" autocomplete="off">
-                <p class="error-msg" id="err2">⚠ Please enter a valid URL starting with http:// or https://</p>
+                <label><span class="link-num" style="background:var(--accent2);color:white">2</span> Link Two</label>
+                <input type="text" id="link2" placeholder="Paste any URL here..." autocomplete="off">
+                <div class="type-badge" id="badge2"></div>
+                <p class="error-msg" id="err2">⚠ Please enter a valid URL starting with https://</p>
             </div>
 
             <div class="link-input-group g3">
                 <label><span class="link-num" style="background:var(--accent3);color:#000">3</span> Link Three</label>
-                <input type="text" id="link3" placeholder="https://your-third-link.com" autocomplete="off">
-                <p class="error-msg" id="err3">⚠ Please enter a valid URL starting with http:// or https://</p>
+                <input type="text" id="link3" placeholder="Paste any URL here..." autocomplete="off">
+                <div class="type-badge" id="badge3"></div>
+                <p class="error-msg" id="err3">⚠ Please enter a valid URL starting with https://</p>
             </div>
 
             <div class="link-input-group g4">
                 <label><span class="link-num" style="background:var(--yellow);color:#000">4</span> Link Four</label>
-                <input type="text" id="link4" placeholder="https://your-fourth-link.com" autocomplete="off">
-                <p class="error-msg" id="err4">⚠ Please enter a valid URL starting with http:// or https://</p>
+                <input type="text" id="link4" placeholder="Paste any URL here..." autocomplete="off">
+                <div class="type-badge" id="badge4"></div>
+                <p class="error-msg" id="err4">⚠ Please enter a valid URL starting with https://</p>
             </div>
 
-            <button type="submit" class="submit-btn">⚡ Launch Viewer</button>
+            <button type="submit" class="submit-btn">✦ Launch SplitScreen</button>
         </form>
     </div>
 </div>
 
-{{-- ======== IFRAME SCREEN ======== --}}
+{{-- ======== VIEWER SCREEN ======== --}}
 <div id="iframeScreen">
     <div class="viewer-topbar">
-        <div class="brand">⚡ VIEWER</div>
+        <div class="brand">SPLITSCREEN</div>
         <div class="tab-pills">
             <button class="tab-pill tg active" id="tabGrid" onclick="switchTab('grid')">⊞ Grid</button>
-            <button class="tab-pill t1" id="tab1" onclick="switchTab(0)">Link 1</button>
-            <button class="tab-pill t2" id="tab2" onclick="switchTab(1)">Link 2</button>
-            <button class="tab-pill t3" id="tab3" onclick="switchTab(2)">Link 3</button>
-            <button class="tab-pill t4" id="tab4" onclick="switchTab(3)">Link 4</button>
+            <button class="tab-pill t1" id="tab0" onclick="switchTab(0)"><span id="tabIcon0">🌐</span> Link 1</button>
+            <button class="tab-pill t2" id="tab1" onclick="switchTab(1)"><span id="tabIcon1">🌐</span> Link 2</button>
+            <button class="tab-pill t3" id="tab2" onclick="switchTab(2)"><span id="tabIcon2">🌐</span> Link 3</button>
+            <button class="tab-pill t4" id="tab3" onclick="switchTab(3)"><span id="tabIcon3">🌐</span> Link 4</button>
         </div>
         <button class="back-btn" onclick="goBack()">← Back</button>
     </div>
@@ -436,47 +442,47 @@
 
         {{-- GRID VIEW --}}
         <div id="gridView">
-            <div class="iframe-panel" id="panel0">
-{{--                <div class="iframe-panel-label"><span class="dot d1"></span> <span id="label0"  onclick="switchTab(0)">Link 1</span></div>--}}
-{{--                <div class="iframe-loading" id="loading0"><div class="spinner"></div> Loading...</div>--}}
-                <iframe id="iframe0" src=""></iframe>
+            <div class="iframe-panel">
+                <div class="iframe-panel-label"><span class="dot d1"></span> Link 1</div>
+                <div class="iframe-loading" id="loading0"><div class="spinner"></div>Loading...</div>
+                <iframe id="webFrame0" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback0">
                     <div class="fallback-icon">🔒</div>
                     <div class="fallback-title">This site blocks embedding</div>
-                    <div class="fallback-desc">This website does not allow being displayed inside another page. Click below to open it directly.</div>
+                    <div class="fallback-desc">This website prevents being shown inside another page.</div>
                     <a class="open-btn" id="openBtn0" href="#" target="_self">Open in This Tab →</a>
                 </div>
             </div>
-            <div class="iframe-panel" id="panel1">
-{{--                <div class="iframe-panel-label"><span class="dot d2"></span> <span id="label1"  onclick="switchTab(1)">Link 2</span></div>--}}
-{{--                <div class="iframe-loading" id="loading1"><div class="spinner"></div> Loading...</div>--}}
-                <iframe id="iframe1" src=""></iframe>
+            <div class="iframe-panel">
+                <div class="iframe-panel-label"><span class="dot d2"></span> Link 2</div>
+                <div class="iframe-loading" id="loading1"><div class="spinner"></div>Loading...</div>
+                <iframe id="webFrame1" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback1">
                     <div class="fallback-icon">🔒</div>
                     <div class="fallback-title">This site blocks embedding</div>
-                    <div class="fallback-desc">This website does not allow being displayed inside another page. Click below to open it directly.</div>
+                    <div class="fallback-desc">This website prevents being shown inside another page.</div>
                     <a class="open-btn" id="openBtn1" href="#" target="_self">Open in This Tab →</a>
                 </div>
             </div>
-            <div class="iframe-panel" id="panel2">
-{{--                <div class="iframe-panel-label"><span class="dot d3"></span> <span id="label2"  onclick="switchTab(2)">Link 3</span></div>--}}
-{{--                <div class="iframe-loading" id="loading2"><div class="spinner"></div> Loading...</div>--}}
-                <iframe id="iframe2" src=""></iframe>
+            <div class="iframe-panel">
+                <div class="iframe-panel-label"><span class="dot d3"></span> Link 3</div>
+                <div class="iframe-loading" id="loading2"><div class="spinner"></div>Loading...</div>
+                <iframe id="webFrame2" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback2">
                     <div class="fallback-icon">🔒</div>
                     <div class="fallback-title">This site blocks embedding</div>
-                    <div class="fallback-desc">This website does not allow being displayed inside another page. Click below to open it directly.</div>
+                    <div class="fallback-desc">This website prevents being shown inside another page.</div>
                     <a class="open-btn" id="openBtn2" href="#" target="_self">Open in This Tab →</a>
                 </div>
             </div>
-            <div class="iframe-panel" id="panel3">
-{{--                <div class="iframe-panel-label"><span class="dot d4"></span> <span id="label3"  onclick="switchTab(3)">Link 4</span></div>--}}
-{{--                <div class="iframe-loading" id="loading3"><div class="spinner"></div> Loading...</div>--}}
-                <iframe id="iframe3" src=""></iframe>
+            <div class="iframe-panel">
+                <div class="iframe-panel-label"><span class="dot d4"></span> Link 4</div>
+                <div class="iframe-loading" id="loading3"><div class="spinner"></div>Loading...</div>
+                <iframe id="webFrame3" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback3">
                     <div class="fallback-icon">🔒</div>
                     <div class="fallback-title">This site blocks embedding</div>
-                    <div class="fallback-desc">This website does not allow being displayed inside another page. Click below to open it directly.</div>
+                    <div class="fallback-desc">This website prevents being shown inside another page.</div>
                     <a class="open-btn" id="openBtn3" href="#" target="_self">Open in This Tab →</a>
                 </div>
             </div>
@@ -484,14 +490,14 @@
 
         {{-- SINGLE VIEW --}}
         <div id="singleView">
-            <div class="iframe-panel" style="height:100%;">
-                <div class="iframe-panel-label"><span class="dot" id="singleDot"></span> <span id="singleLabel">Link</span></div>
-                <div class="iframe-loading" id="loadingSingle"><div class="spinner"></div> Loading...</div>
-                <iframe id="iframeSingle" src=""></iframe>
+            <div class="iframe-panel" style="height:100%">
+                <div class="iframe-panel-label"><span class="dot" id="singleDot"></span><span id="singleLabel">Link</span></div>
+                <div class="iframe-loading" id="loadingSingle"><div class="spinner"></div>Loading...</div>
+                <iframe id="webFrameSingle" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallbackSingle">
                     <div class="fallback-icon">🔒</div>
                     <div class="fallback-title">This site blocks embedding</div>
-                    <div class="fallback-desc">This website does not allow being displayed inside another page. Click below to open it directly in this tab.</div>
+                    <div class="fallback-desc">This website prevents being shown inside another page.</div>
                     <a class="open-btn" id="openBtnSingle" href="#" target="_self">Open in This Tab →</a>
                 </div>
             </div>
@@ -501,10 +507,40 @@
 </div>
 
 <script>
-    let links = ['', '', '', ''];
+    let links = ['','','',''];
+    let types = ['web','web','web','web'];
     const dotClasses = ['d1','d2','d3','d4'];
-    const tabNames = ['Link 1','Link 2','Link 3','Link 4'];
-    const TIMEOUT_MS = 5000; // show fallback after 5s if blank
+
+    function detectType(url) {
+        if (!url) return 'web';
+        if (/youtube\.com\/watch|youtu\.be\/|youtube\.com\/embed/i.test(url)) return 'youtube';
+        if (/drive\.google\.com\/file\/d\//i.test(url))                        return 'gdrive';
+        return 'web';
+    }
+
+    function getEmbedUrl(url, type) {
+        if (type === 'youtube') {
+            let match = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
+            return match ? 'https://www.youtube.com/embed/' + match[1] : url;
+        }
+        if (type === 'gdrive') {
+            let match = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+            return match ? 'https://drive.google.com/file/d/' + match[1] + '/preview' : url;
+        }
+        return url;
+    }
+
+    function getTypeIcon(type) {
+        return { web:'🌐', youtube:'▶️', gdrive:'📁' }[type] || '🌐';
+    }
+
+    function getTypeBadgeText(type) {
+        return { web:'🌐 Website', youtube:'▶️ YouTube', gdrive:'📁 Google Drive' }[type] || '🌐 Website';
+    }
+
+    function getBadgeClass(type) {
+        return { web:'web', youtube:'yt', gdrive:'gdrive' }[type] || 'web';
+    }
 
     function isValidUrl(str) {
         try {
@@ -513,11 +549,28 @@
         } catch { return false; }
     }
 
-    // ---- Form Submit ----
+    // Live detection
+    for (let i = 1; i <= 4; i++) {
+        (function(idx) {
+            $('#link' + idx).on('input', function() {
+                let val = $(this).val().trim();
+                $('#err' + idx).hide();
+                let $badge = $('#badge' + idx);
+                if (val && isValidUrl(val)) {
+                    let t = detectType(val);
+                    $badge.attr('class', 'type-badge ' + getBadgeClass(t));
+                    $badge.text(getTypeBadgeText(t)).show();
+                } else {
+                    $badge.hide();
+                }
+            });
+        })(i);
+    }
+
+    // Form submit
     $('#linkForm').on('submit', function(e) {
         e.preventDefault();
         let valid = true;
-
         for (let i = 0; i < 4; i++) {
             let val = $('#link' + (i+1)).val().trim();
             if (!val || !isValidUrl(val)) {
@@ -526,116 +579,91 @@
             } else {
                 $('#err' + (i+1)).hide();
                 links[i] = val;
+                types[i] = detectType(val);
+                $('#tabIcon' + i).text(getTypeIcon(types[i]));
             }
         }
         if (!valid) return;
 
-        // Update labels & open buttons
-        for (let i = 0; i < 4; i++) {
-            $('#label' + i).text(links[i]);
-            $('#openBtn' + i).attr('href', links[i]);
-            $('#tab' + (i+1)).text('Link ' + (i+1));
-        }
+        for (let i = 0; i < 4; i++) loadPanel(i, links[i], types[i], false);
 
-        loadGridIframes();
-
+        switchTab('grid');
         $('#formScreen').hide();
         $('#iframeScreen').addClass('active').css('display','flex');
-        switchTab('grid');
     });
 
-    // ---- Load Iframes in Grid ----
-    function loadGridIframes() {
-        for (let i = 0; i < 4; i++) {
-            loadIframe('iframe' + i, 'fallback' + i, 'loading' + i, links[i], '#openBtn' + i);
+    // Load panel
+    function loadPanel(idx, url, type, isSingle) {
+        let s = isSingle ? 'Single' : idx;
+        let $web      = $('#webFrame'   + s);
+        let $loading  = $('#loading'    + s);
+        let $fallback = $('#fallback'   + s);
+        let $openBtn  = $('#openBtn'    + s);
+
+        $web.hide().attr('src','');
+        $fallback.hide().css('display','none');
+        $loading.show();
+        $openBtn.attr('href', url);
+
+        if (isSingle) {
+            $('#singleDot').attr('class', 'dot ' + dotClasses[idx]);
+            $('#singleLabel').text('Link ' + (idx + 1));
+        }
+
+        let embedUrl = getEmbedUrl(url, type);
+
+        if (type === 'youtube' || type === 'gdrive') {
+            $web.attr('src', embedUrl).show();
+            $web.off('load').on('load', function() { $loading.fadeOut(200); });
+            setTimeout(function() { $loading.fadeOut(200); }, 4000);
+        } else {
+            $web.attr('src', url).show();
+            $web.off('load').on('load', function() {
+                $loading.fadeOut(200);
+                try {
+                    let doc = this.contentDocument || this.contentWindow.document;
+                    if (!doc || !doc.body || doc.body.innerHTML.trim() === '') {
+                        showFallback($web, $fallback, $loading);
+                    }
+                } catch(e) { $loading.fadeOut(200); }
+            });
+            setTimeout(function() {
+                if ($loading.is(':visible')) {
+                    try {
+                        let doc = $web[0].contentDocument || $web[0].contentWindow.document;
+                        if (!doc || !doc.body || doc.body.innerHTML.trim() === '') {
+                            showFallback($web, $fallback, $loading);
+                        } else { $loading.fadeOut(200); }
+                    } catch(e) { $loading.fadeOut(200); }
+                }
+            }, 5000);
         }
     }
 
-    function loadIframe(iframeId, fallbackId, loadingId, url, openBtnSelector) {
-        let $iframe = $('#' + iframeId);
-        let $fallback = $('#' + fallbackId);
-        let $loading = $('#' + loadingId);
-
-        // Reset
-        $iframe.show().attr('src', '');
-        $fallback.hide().css('display','none');
-        $loading.show();
-        if (openBtnSelector) $(openBtnSelector).attr('href', url);
-
-        // Set src
-        $iframe.attr('src', url);
-
-        // Detect load
-        $iframe.off('load').on('load', function() {
-            $loading.fadeOut(200);
-            // Try to detect if blocked (blank content)
-            try {
-                let doc = this.contentDocument || this.contentWindow.document;
-                if (!doc || doc.body === null || doc.body.innerHTML.trim() === '') {
-                    showFallback($iframe, $fallback, $loading);
-                }
-            } catch(err) {
-                // Cross-origin: can't read content — it likely loaded fine
-                $loading.fadeOut(200);
-            }
-        });
-
-        // Timeout fallback — if still loading after N seconds, show fallback
-        let timer = setTimeout(function() {
-            try {
-                let doc = $iframe[0].contentDocument || $iframe[0].contentWindow.document;
-                if (!doc || doc.body === null || doc.body.innerHTML.trim() === '') {
-                    showFallback($iframe, $fallback, $loading);
-                } else {
-                    $loading.fadeOut(200);
-                }
-            } catch(e) {
-                // Cross-origin — assume loaded
-                $loading.fadeOut(200);
-            }
-        }, TIMEOUT_MS);
-
-        $iframe.data('timer', timer);
-    }
-
-    function showFallback($iframe, $fallback, $loading) {
+    function showFallback($web, $fallback, $loading) {
         $loading.hide();
-        $iframe.hide();
+        $web.hide();
         $fallback.css('display','flex');
     }
 
-    // ---- Tab Switch ----
     function switchTab(idx) {
         $('.tab-pill').removeClass('active');
-
         if (idx === 'grid') {
             $('#tabGrid').addClass('active');
             $('#gridView').show();
             $('#singleView').hide();
         } else {
-            $('#tab' + (idx+1)).addClass('active');
+            $('#tab' + idx).addClass('active');
             $('#gridView').hide();
             $('#singleView').show();
-
-            // Update single dot color
-            $('#singleDot').attr('class', 'dot ' + dotClasses[idx]);
-            $('#singleLabel').text(links[idx]);
-            $('#openBtnSingle').attr('href', links[idx]);
-
-            loadIframe('iframeSingle', 'fallbackSingle', 'loadingSingle', links[idx], null);
+            loadPanel(idx, links[idx], types[idx], true);
         }
     }
 
-    // ---- Back ----
     function goBack() {
-        $('iframe').attr('src', '');
+        $('iframe').attr('src','');
         $('#iframeScreen').removeClass('active').hide();
         $('#formScreen').show();
-    }
-
-    // Hide error on input
-    for (let i = 1; i <= 4; i++) {
-        $('#link' + i).on('input', function() { $('#err' + i).hide(); });
     }
 </script>
 
