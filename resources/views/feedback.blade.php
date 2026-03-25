@@ -196,6 +196,7 @@
             inset: 0;
             z-index: 100;
             flex-direction: column;
+            background: #000;
         }
         #iframeScreen.active { display: flex; }
 
@@ -204,11 +205,12 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 16px;
-            height: 52px;
+            height: 48px;
             background: var(--surface);
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
             gap: 10px;
+            z-index: 10;
         }
 
         .brand {
@@ -264,30 +266,102 @@
         }
         .back-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-        .iframe-body { flex: 1; overflow: hidden; position: relative; }
+        /* ---- IFRAME BODY ---- */
+        .iframe-body {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+        }
 
+        /* ---- GRID VIEW: no gap, no labels, iframes fill 100% ---- */
         #gridView {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 8px;
-            padding: 8px;
-            height: 100%;
+            grid-template-columns: 50% 50%;
+            /* each row = 50vw wide, so height = 50vw * 9/16 = 28.125vw */
+            grid-template-rows: 33.150vw 33.150vw;
+            gap: 0;
+            background: transparent;
+            width: 100%;
+            /* center vertically if shorter than screen */
+            margin: auto;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
         }
 
-        #singleView { display: none; height: 100%; padding: 8px; }
-
-        .iframe-panel {
-            border-radius: 10px;
+        #gridView .iframe-panel {
+            position: relative;
             overflow: hidden;
-            border: 1px solid var(--border);
+            background: #000;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border: none;
+        }
+
+        /* No label bar in grid */
+        #gridView .iframe-panel-label { display: none; }
+
+        #gridView .iframe-panel iframe {
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: calc(100% + 2px);
+            height: calc(100% + 2px);
+            border: none;
+            display: none;
+        }
+
+        #gridView .iframe-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+            background: #000;
+            color: var(--muted);
+            font-size: 12px;
+            font-family: 'Space Mono', monospace;
+            z-index: 2;
+        }
+
+        #gridView .iframe-fallback {
+            display: none;
+            position: absolute;
+            inset: 0;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 30px;
+            text-align: center;
             background: var(--surface2);
+        }
+
+        /* ---- SINGLE VIEW ---- */
+        #singleView {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        #singleView .iframe-panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #000;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
 
-        .iframe-panel-label {
+        #singleView .iframe-panel-label {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -298,49 +372,37 @@
             background: var(--surface);
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
+            height: 28px;
         }
 
-        .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-        .d1 { background: var(--accent); }
-        .d2 { background: var(--accent2); }
-        .d3 { background: var(--accent3); }
-        .d4 { background: var(--yellow); }
-
-        .iframe-panel iframe {
-            flex: 1;
+        #singleView .iframe-panel iframe {
+            position: absolute;
+            inset: 28px 0 0 0;
             width: 100%;
+            height: calc(100% - 28px);
             border: none;
-            background: white;
             display: none;
         }
 
-        .iframe-loading {
+        #singleView .iframe-loading {
             position: absolute;
             inset: 28px 0 0 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--surface2);
             flex-direction: column;
             gap: 10px;
-            font-size: 12px;
+            background: #000;
             color: var(--muted);
+            font-size: 12px;
             font-family: 'Space Mono', monospace;
             z-index: 2;
         }
 
-        .spinner {
-            width: 24px; height: 24px;
-            border: 2px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .iframe-fallback {
+        #singleView .iframe-fallback {
             display: none;
-            flex: 1;
+            position: absolute;
+            inset: 28px 0 0 0;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -350,9 +412,25 @@
             background: var(--surface2);
         }
 
-        .fallback-icon  { font-size: 44px; }
-        .fallback-title { font-size: 15px; font-weight: 600; }
-        .fallback-desc  { font-size: 12px; color: var(--muted); max-width: 260px; line-height: 1.6; }
+        /* ---- SHARED ---- */
+        .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .d1 { background: var(--accent); }
+        .d2 { background: var(--accent2); }
+        .d3 { background: var(--accent3); }
+        .d4 { background: var(--yellow); }
+
+        .spinner {
+            width: 24px; height: 24px;
+            border: 2px solid #333;
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .fallback-icon  { font-size: 40px; }
+        .fallback-title { font-size: 14px; font-weight: 600; color: var(--text); }
+        .fallback-desc  { font-size: 12px; color: var(--muted); max-width: 240px; line-height: 1.6; }
 
         .open-btn {
             padding: 10px 22px;
@@ -366,7 +444,7 @@
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
             box-shadow: 0 4px 16px rgba(108,99,255,0.4);
         }
         .open-btn:hover { transform: translateY(-2px); color: white; }
@@ -440,11 +518,11 @@
 
     <div class="iframe-body">
 
-        {{-- GRID VIEW --}}
+        {{-- GRID VIEW: labels hidden, iframes fill 100% --}}
         <div id="gridView">
             <div class="iframe-panel">
-{{--                <div class="iframe-panel-label"><span class="dot d1"></span> Link 1</div>--}}
-{{--                <div class="iframe-loading" id="loading0"><div class="spinner"></div>Loading...</div>--}}
+                <div class="iframe-panel-label"><span class="dot d1"></span> Link 1</div>
+                <div class="iframe-loading" id="loading0"><div class="spinner"></div>Loading...</div>
                 <iframe id="webFrame0" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback0">
                     <div class="fallback-icon">🔒</div>
@@ -454,8 +532,8 @@
                 </div>
             </div>
             <div class="iframe-panel">
-{{--                <div class="iframe-panel-label"><span class="dot d2"></span> Link 2</div>--}}
-{{--                <div class="iframe-loading" id="loading1"><div class="spinner"></div>Loading...</div>--}}
+                <div class="iframe-panel-label"><span class="dot d2"></span> Link 2</div>
+                <div class="iframe-loading" id="loading1"><div class="spinner"></div>Loading...</div>
                 <iframe id="webFrame1" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback1">
                     <div class="fallback-icon">🔒</div>
@@ -465,8 +543,8 @@
                 </div>
             </div>
             <div class="iframe-panel">
-{{--                <div class="iframe-panel-label"><span class="dot d3"></span> Link 3</div>--}}
-{{--                <div class="iframe-loading" id="loading2"><div class="spinner"></div>Loading...</div>--}}
+                <div class="iframe-panel-label"><span class="dot d3"></span> Link 3</div>
+                <div class="iframe-loading" id="loading2"><div class="spinner"></div>Loading...</div>
                 <iframe id="webFrame2" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback2">
                     <div class="fallback-icon">🔒</div>
@@ -476,8 +554,8 @@
                 </div>
             </div>
             <div class="iframe-panel">
-{{--                <div class="iframe-panel-label"><span class="dot d4"></span> Link 4</div>--}}
-{{--                <div class="iframe-loading" id="loading3"><div class="spinner"></div>Loading...</div>--}}
+                <div class="iframe-panel-label"><span class="dot d4"></span> Link 4</div>
+                <div class="iframe-loading" id="loading3"><div class="spinner"></div>Loading...</div>
                 <iframe id="webFrame3" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback3">
                     <div class="fallback-icon">🔒</div>
@@ -490,7 +568,7 @@
 
         {{-- SINGLE VIEW --}}
         <div id="singleView">
-            <div class="iframe-panel" style="height:100%">
+            <div class="iframe-panel">
                 <div class="iframe-panel-label"><span class="dot" id="singleDot"></span><span id="singleLabel">Link</span></div>
                 <div class="iframe-loading" id="loadingSingle"><div class="spinner"></div>Loading...</div>
                 <iframe id="webFrameSingle" src="" allow="autoplay; fullscreen"></iframe>
@@ -651,11 +729,11 @@
         if (idx === 'grid') {
             $('#tabGrid').addClass('active');
             $('#gridView').show();
-            $('#singleView').hide();
+            $('#singleView').hide().css('display','none');
         } else {
             $('#tab' + idx).addClass('active');
             $('#gridView').hide();
-            $('#singleView').show();
+            $('#singleView').show().css('display','flex');
             loadPanel(idx, links[idx], types[idx], true);
         }
     }
