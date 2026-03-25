@@ -443,8 +443,8 @@
         {{-- GRID VIEW --}}
         <div id="gridView">
             <div class="iframe-panel">
-                <div class="iframe-panel-label"><span class="dot d1"></span> Link 1</div>
-                <div class="iframe-loading" id="loading0"><div class="spinner"></div>Loading...</div>
+{{--                <div class="iframe-panel-label"><span class="dot d1"></span> Link 1</div>--}}
+{{--                <div class="iframe-loading" id="loading0"><div class="spinner"></div>Loading...</div>--}}
                 <iframe id="webFrame0" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback0">
                     <div class="fallback-icon">🔒</div>
@@ -454,8 +454,8 @@
                 </div>
             </div>
             <div class="iframe-panel">
-                <div class="iframe-panel-label"><span class="dot d2"></span> Link 2</div>
-                <div class="iframe-loading" id="loading1"><div class="spinner"></div>Loading...</div>
+{{--                <div class="iframe-panel-label"><span class="dot d2"></span> Link 2</div>--}}
+{{--                <div class="iframe-loading" id="loading1"><div class="spinner"></div>Loading...</div>--}}
                 <iframe id="webFrame1" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback1">
                     <div class="fallback-icon">🔒</div>
@@ -465,8 +465,8 @@
                 </div>
             </div>
             <div class="iframe-panel">
-                <div class="iframe-panel-label"><span class="dot d3"></span> Link 3</div>
-                <div class="iframe-loading" id="loading2"><div class="spinner"></div>Loading...</div>
+{{--                <div class="iframe-panel-label"><span class="dot d3"></span> Link 3</div>--}}
+{{--                <div class="iframe-loading" id="loading2"><div class="spinner"></div>Loading...</div>--}}
                 <iframe id="webFrame2" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback2">
                     <div class="fallback-icon">🔒</div>
@@ -476,8 +476,8 @@
                 </div>
             </div>
             <div class="iframe-panel">
-                <div class="iframe-panel-label"><span class="dot d4"></span> Link 4</div>
-                <div class="iframe-loading" id="loading3"><div class="spinner"></div>Loading...</div>
+{{--                <div class="iframe-panel-label"><span class="dot d4"></span> Link 4</div>--}}
+{{--                <div class="iframe-loading" id="loading3"><div class="spinner"></div>Loading...</div>--}}
                 <iframe id="webFrame3" src="" allow="autoplay; fullscreen"></iframe>
                 <div class="iframe-fallback" id="fallback3">
                     <div class="fallback-icon">🔒</div>
